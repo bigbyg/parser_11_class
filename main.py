@@ -6,24 +6,12 @@ import time
 import json
 
 
-def get_url():
+def get_books():
     cur_time = datetime.datetime.now().strftime("%d_%m_%Y_%H_%M")
     soup, header = get_html_text()
     genre = soup.find('h1', class_='genre-name').text
 
-    with open(f'labitint_{cur_time}_{genre}.csv', 'w', encoding='utf-8') as file:
-        writer = csv.writer(file)
-
-        writer.writerow(
-            (
-                'Название книги',
-                'Автор книги',
-                'Издательство',
-                'Цена',
-                'Скидка на книгу',
-                'Наличие'
-            )
-        )
+    save_csv(cur_time, genre)
 
     soup, header = get_html_text()
 
@@ -106,5 +94,20 @@ def save_json(books_data, cur_time, genre):
         json.dump(books_data, file, indent=4, ensure_ascii=False)
 
 
+def save_csv(cur_time, genre):
+    with open(f'labitint_{cur_time}_{genre}.csv', 'w', encoding='utf-8') as file:
+        writer = csv.writer(file)
+
+        writer.writerow(
+            (
+                'Название книги',
+                'Автор книги',
+                'Издательство',
+                'Цена',
+                'Скидка на книгу',
+                'Наличие'
+            )
+        )
+
 if __name__ == '__main__':
-    get_url()
+    get_books()

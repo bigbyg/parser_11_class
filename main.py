@@ -5,6 +5,8 @@ import csv
 import time
 import json
 
+from openpyxl.workbook import Workbook
+
 
 def get_books():
     cur_time = datetime.datetime.now().strftime("%d_%m_%Y_%H_%M")
@@ -74,6 +76,7 @@ def get_books():
         print(str(page) + f'/{page_count}-страница')
         time.sleep(1)
     save_json(books_data, cur_time, genre)
+    save_excel(books_data, genre)
 
 
 
@@ -108,6 +111,22 @@ def save_csv(cur_time, genre):
                 'Наличие'
             )
         )
+
+def save_excel(data, genre):
+    headers = list(data[0].keys())
+    file_name = 'labirint_'+genre+'.xlsx'
+
+    wb = Workbook()
+    page = wb.active
+    page.title = 'data'
+    page.append(headers)
+    for book in data[:-1]:
+        row = []
+        for k, v in book.items():
+            row.append(v)
+        page.append(row)
+    wb.save(filename=file_name)
+
 
 if __name__ == '__main__':
     get_books()

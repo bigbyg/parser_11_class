@@ -1,4 +1,5 @@
 /venv/
 *.json
 *.csv
-*.lxml
+*.xml
+*.xlsx
